@@ -8,11 +8,11 @@ import globals from "rollup-plugin-node-globals";
 // Debugging tools
 import { visualizer } from "rollup-plugin-visualizer";
 
-import pickFromPackageJson from "./scripts/pick-from-package-json";
+import pickFromPackageJson from "./scripts/pick-from-package-json.js";
 import { version } from "./package.json";
 
 const config = {
-  input: "./browser-entry.js",
+  input: "./browser-entry.cjs",
   output: {
     file: "./mocha.js",
     format: "umd",

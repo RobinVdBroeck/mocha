@@ -20,14 +20,14 @@
  * configuration we've built.
  */
 
-"use strict";
-const fs = require("node:fs");
-const path = require("node:path");
-const os = require("node:os");
-const rollupPlugin = require("./scripts/karma-rollup-plugin");
-const BASE_BUNDLE_DIR_PATH = path.join(__dirname, ".karma");
+import { mkdirSync } from "node:fs";
+import { join } from "node:path";
+import { hostname as _hostname } from "node:os";
+import rollupPlugin from "./scripts/karma-rollup-plugin.cjs";
+
+const BASE_BUNDLE_DIR_PATH = join(import.meta.dirname, ".karma");
 const env = process.env;
-const hostname = os.hostname();
+const hostname = _hostname();
 const BROWSER = env.BROWSER;
 
 const SAUCE_BROWSER_PLATFORM_MAP = {
@@ -75,8 +75,8 @@ const baseConfig = {
   },
 };
 
-module.exports = (config) => {
-  let bundleDirPath = path.join(BASE_BUNDLE_DIR_PATH, hostname);
+export default (config) => {
+  let bundleDirPath = join(BASE_BUNDLE_DIR_PATH, hostname);
   let cfg = { ...baseConfig };
 
   // TO RUN AGAINST SAUCELABS LOCALLY, execute:
@@ -89,7 +89,7 @@ module.exports = (config) => {
     if (env.GITHUB_RUN_ID) {
       console.error("Github Actions detected");
       const buildId = `github-${env.GITHUB_RUN_ID}_${env.GITHUB_RUN_NUMBER}`;
-      bundleDirPath = path.join(BASE_BUNDLE_DIR_PATH, buildId);
+      bundleDirPath = join(BASE_BUNDLE_DIR_PATH, buildId);
       sauceConfig = {
         build: buildId,
       };
@@ -143,7 +143,7 @@ module.exports = (config) => {
 const createBundleDir = (cfg, bundleDirPath) => {
   if (bundleDirPath) {
     try {
-      fs.mkdirSync(bundleDirPath, { recursive: true });
+      mkdirSync(bundleDirPath, { recursive: true });
       cfg = {
         ...cfg,
         rollup: {
@@ -224,15 +224,17 @@ const addSauceTests = (cfg, sauceLabs) => {
 const addStandardDependencies = (cfg) => ({
   ...cfg,
   files: [
-    require.resolve("sinon/pkg/sinon.js"),
-    require.resolve("unexpected/unexpected"),
+    import.meta.resolve("sinon/pkg/sinon.js"),
+    import.meta.resolve("unexpected/unexpected"),
     {
-      pattern: require.resolve("unexpected/unexpected.js.map"),
+      pattern: import.meta.resolve("unexpected/unexpected.js.map"),
       included: false,
     },
-    require.resolve("unexpected-sinon"),
-    require.resolve("unexpected-eventemitter/dist/unexpected-eventemitter.js"),
-    require.resolve("./test/browser-specific/setup"),
+    import.meta.resolve("unexpected-sinon"),
+    import.meta.resolve(
+      "unexpected-eventemitter/dist/unexpected-eventemitter.js",
+    ),
+    import.meta.resolve("./test/browser-specific/setup.cjs"),
     ...cfg.files,
   ],
   rollup: {

@@ -1,15 +1,13 @@
-"use strict";
-
-const js = require("@eslint/js");
-const n = require("eslint-plugin-n");
-const globals = require("globals");
+import js from "@eslint/js";
+import n from "eslint-plugin-n";
+import globals from "globals";
 
 const messages = {
   gh237: "See https://github.com/mochajs/mocha/issues/237",
   gh3604: "See https://github.com/mochajs/mocha/issues/3604",
 };
 
-module.exports = [
+export default [
   n.configs["flat/recommended-script"],
   {
     ...js.configs.recommended,
@@ -23,6 +21,8 @@ module.exports = [
     },
     rules: {
       "n/prefer-node-protocol": "error",
+      "n/file-extension-in-import": ["error", "always"],
+      "n/file-extension-in-import": ["error", "always"],
       "no-unused-vars": "error",
       strict: ["error", "global"],
 
@@ -42,15 +42,14 @@ module.exports = [
     files: [
       ".eleventy.js",
       ".wallaby.js",
-      "package-scripts.js",
       "karma.conf.js",
       "bin/*",
-      "docs/_data/**/*.js",
-      "lib/cli/**/*.js",
-      "lib/nodejs/**/*.js",
-      "scripts/**/*.{js,mjs}",
-      "test/**/*.{js,mjs}",
-      "test/node-unit/**/*.js",
+      "docs/_data/**/*.cjs",
+      "lib/cli/**/*.cjs",
+      "lib/nodejs/**/*.cjs",
+      "scripts/**/*.{cjs,mjs}",
+      "test/**/*.{cjs,mjs}",
+      "test/node-unit/**/*.cjs",
     ],
     languageOptions: {
       globals: globals.node,
@@ -59,11 +58,12 @@ module.exports = [
   },
   {
     files: [
-      "lib/nodejs/esm-utils.js",
+      "lib/nodejs/esm-utils.cjs",
       "rollup.config.js",
+      "eslint.config.js",
       "scripts/*.mjs",
-      "scripts/pick-from-package-json.js",
-      "test/compiler-cjs/test.js",
+      "scripts/pick-from-package-json.cjs",
+      "test/compiler-cjs/test.cjs",
     ],
     languageOptions: {
       sourceType: "module",
@@ -78,7 +78,7 @@ module.exports = [
     },
   },
   {
-    files: ["test/**/*.{js,mjs}"],
+    files: ["test/**/*.{cjs,mjs}"],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -95,7 +95,7 @@ module.exports = [
     },
   },
   {
-    files: ["bin/*", "lib/**/*.js"],
+    files: ["bin/*", "lib/**/*.cjs"],
     rules: {
       "no-restricted-globals": [
         "error",
@@ -153,7 +153,7 @@ module.exports = [
     },
   },
   {
-    files: ["lib/reporters/*.js"],
+    files: ["lib/reporters/*.cjs"],
     rules: {
       "no-restricted-syntax": [
         "error",

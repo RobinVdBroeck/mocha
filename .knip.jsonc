@@ -1,11 +1,11 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
   "entry": [
-    "bin/mocha.js!",
+    "bin/mocha.cjs!",
     "bin/_mocha!",
-    "browser-entry.js!",
-    "index.js!",
-    "lib/cli/index.js!",
+    "browser-entry.cjs!",
+    "index.cjs!",
+    "lib/cli/index.cjs!",
   ],
   "project": ["{bin,lib,scripts,test}/**/*.{js,ts,mjs,cjs}"],
   "ignore": [

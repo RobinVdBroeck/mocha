@@ -1,16 +1,16 @@
 "use strict";
 
-const { stripVTControlCharacters } = require("node:util");
-const { resolve } = require("node:path");
-const { execSync } = require("node:child_process");
+import { stripVTControlCharacters } from "node:util";
+import { resolve } from "node:path";
+import { execSync } from "node:child_process";
 
-const executable = require.resolve("../../bin/mocha");
+const executable = import.meta.resolve("../../bin/mocha.cjs");
 const flag = "--help";
 
 /**
  * Return the output of `mocha --help` for display
  */
-module.exports = () => {
+export default () => {
   return stripVTControlCharacters(
     String(
       execSync(`"${process.execPath}" ${executable} ${flag}`, {

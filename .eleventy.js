@@ -1,13 +1,16 @@
-"use strict";
+import inclusiveLanguagePlugin from "@11ty/eleventy-plugin-inclusive-language";
+import markdownIt from "markdown-it";
+import markdownItAnchor from "markdown-it-anchor";
+import markdownItAttrs from "markdown-it-attrs";
+import MarkdownItEmoji from "markdown-it-emoji";
+import markdownItPrism from "markdown-it-prism";
+import uslug from "uslug";
 
-module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(
-    require("@11ty/eleventy-plugin-inclusive-language"),
-    {
-      words:
-        "simply,obviously,basically,of course,clearly,everyone knows,however,easy",
-    },
-  );
+export default function (eleventyConfig) {
+  eleventyConfig.addPlugin(inclusiveLanguagePlugin, {
+    words:
+      "simply,obviously,basically,of course,clearly,everyone knows,however,easy",
+  });
 
   eleventyConfig.addPassthroughCopy("docs/css");
   eleventyConfig.addPassthroughCopy("docs/js");
@@ -21,28 +24,28 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("docs/api/styles");
 
   /* Markdown Plugins */
-  const markdown = require("markdown-it")({
+  const markdown = markdownIt({
     html: true,
     linkify: true,
     typographer: true,
   });
 
-  markdown.use(require("markdown-it-anchor"), {
-    slugify: require("uslug"),
+  markdown.use(markdownItAnchor, {
+    slugify: "uslug",
     permalink: true,
     permalinkBefore: true,
     permalinkClass: "direct-link",
     permalinkSymbol: "#",
   });
 
-  markdown.use(require("markdown-it-attrs"), {
+  markdown.use(markdownItAttrs, {
     leftDelimiter: "{:",
     rightDelimiter: "}",
   });
 
-  markdown.use(require("markdown-it-prism"));
+  markdown.use(markdownItPrism);
 
-  markdown.use(require("markdown-it-emoji"));
+  markdown.use(MarkdownItEmoji);
 
   eleventyConfig.setLibrary("md", markdown);
 
@@ -55,4 +58,4 @@ module.exports = function (eleventyConfig) {
       output: "docs/_site",
     },
   };
-};
+}

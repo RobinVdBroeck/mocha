@@ -1,4 +1,4 @@
-/**
+/*createDebug*
  * This script gathers metadata for active supporters of Mocha from OpenCollective's
  * API by aggregating order ("donation") information.
  *
@@ -13,13 +13,13 @@
  * @see https://docs.opencollective.com/help/contributing/development/api
  */
 
-"use strict";
+import { writeFile, mkdir, rm } from "node:fs/promises";
+import { resolve } from "node:path";
+import needle from "needle";
+import createDebug from "debug";
+const debug = createDebug("mocha:docs:data:supporters");
 
-const { writeFile, mkdir, rm } = require("node:fs").promises;
-const { resolve } = require("node:path");
-const debug = require("debug")("mocha:docs:data:supporters");
-const needle = require("needle");
-const blocklist = new Set(require("./blocklist.json"));
+const blocklist = new Set(await import("./blocklist.json"));
 
 /**
  * In addition to the blocklist, any account slug matching this regex will not
@@ -297,10 +297,10 @@ const getSupporters = async () => {
   return supporters;
 };
 
-module.exports = getSupporters;
+export default getSupporters;
 
-if (require.main === module) {
-  require("debug").enable("mocha:docs:data:supporters");
+if (import.meta.main) {
+  createDebug.enable("mocha:docs:data:supporters");
   process.on("unhandledRejection", (err) => {
     throw err;
   });

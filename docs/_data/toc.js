@@ -1,13 +1,13 @@
 "use strict";
 
-const markdownToc = require("markdown-toc");
-const { readFileSync } = require("node:fs");
-const { resolve } = require("node:path");
+import markdownToc from "markdown-toc";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 const IGNORED_HEADINGS_REGEXP = /Features|Table of Contents|Backers|Sponsors/i;
 const DOCUMENT_PATH = resolve(__dirname, "..", "index.md");
 
-module.exports = () => {
+export default () => {
   const doc = readFileSync(DOCUMENT_PATH, "utf-8");
   return markdownToc(doc, {
     slugify: require("uslug"),

@@ -6,9 +6,9 @@
 
 import type { FSWatcher, MatchFunction } from "chokidar";
 
-import type { constants } from "./error-constants.js";
-import type Mocha from "./mocha.js";
-import Runner from "./runner.js";
+import type { constants } from "./error-constants.cjs";
+import type Mocha from "./mocha.cjs";
+import Runner from "./runner.cjs";
 
 /**
  * Command-line options
